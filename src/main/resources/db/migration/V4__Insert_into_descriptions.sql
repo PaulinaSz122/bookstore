@@ -1,0 +1,5 @@
+insert into descriptions (book_id, publisher, release_date, description) values (1, 'Czwarta Strona', '2020-03-25', 'Minęło kilka miesięcy, od kiedy Joanna Chyłka uciekła z kraju. Ślad po niej zaginął i mimo że wystawiono za nią Europejski Nakaz Aresztowania, służby nie potrafią odnaleźć żadnego tropu. Przez cały ten czas nie skontaktowała się z nikim w Polsce i nawet Kordian nie wierzy już w to, że Chyłka kiedykolwiek znajdzie sposób, by nawiązać z nim kontakt.
+
+Oryński tymczasem przyjmuję sprawę człowieka, który wybudził się po półtorarocznej śpiączce w klinice. Ukrainiec, Witalij Demczenko, jest oskarżony o to, że wtargnął do jednej z restauracji na Powiślu i zastrzelił trzy osoby. Motywu nigdy nie ustalono, nie udało się też odnaleźć narzędzia zbrodni ani świadków. W dodatku Witalij nie pamięta niczego, co wydarzyło się przed tym, zanim znalazł się w stanie wegetatywnym.
+
+Pamięta jedno: że ma dla Oryńskiego wiadomość od Chyłki.');

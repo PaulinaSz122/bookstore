@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/books")
 public class BookServlet {
     private final Logger logger = LoggerFactory.getLogger(BookServlet.class);
 
@@ -20,7 +20,7 @@ public class BookServlet {
         this.service = service;
     }
 
-    @GetMapping("/books")
+    @GetMapping("/all")
     ResponseEntity<List<Book>> findAllBooks() {
         logger.info("Got request");
         return ResponseEntity.ok(service.findAll());
