@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Bookstore</title>
+</head>
+<body>
+    <main>
+        <table id="books"></table>
+    </main>
+
+    <script>
+        (function() {
+            const API_URL = 'http://localhost:8080/api';
+
+            getAllBooks();
+
+            function getAllBooks () {
+                fetch(`${API_URL}/books/all`)
+                .then(processOkResponse)
+                .then(booksArr => {
+                    document.getElementById('books').innerHTML = booksArr.map(
+                        book => `
+                            <tr>
+                                <td><a href="book.html?id=${book.id}">${book.title}</a></td>
+                                <td>${book.author}</td>
+                                <td>${book.price.toFixed(2)} zł</td>
+                            </tr>
+                        `
+                    ).join('\n');
+                });
+            }
+
+            function processOkResponse(response = {}) {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error(`Status not 200 (${response.status})`);
+            }
+        }) ();
+    </script>
+</body>
+</html>
