@@ -1,11 +1,9 @@
 package io.github.PaulinaSz122.description;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.Reader;
 import java.sql.Clob;
 import java.sql.Date;
-import java.sql.SQLException;
 
 public class DescriptionDTO {
     private Integer id;
@@ -48,7 +46,7 @@ public class DescriptionDTO {
             return;
         }
         this.id = description.getId();
-        this.book_id = description.getBook_id();
+        this.book_id = description.getBookId();
         this.publisher = description.getPublisher();
         this.release_date = description.getRelease_date();
         this.description = sb.toString();

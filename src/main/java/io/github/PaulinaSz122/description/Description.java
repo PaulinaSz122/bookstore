@@ -2,10 +2,7 @@ package io.github.PaulinaSz122.description;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.sql.Clob;
 import java.sql.Date;
 import java.text.DecimalFormat;
@@ -18,7 +15,8 @@ public class Description {
     @GenericGenerator(name = "inc", strategy = "increment")
     private Integer id;
 
-    private Integer book_id;
+    @Column(name = "book_id")
+    private Integer bookId;
     private String publisher;
     private Date release_date;
     private Clob description;
@@ -27,7 +25,7 @@ public class Description {
 
     public Description(Integer id, Integer book_id, String publisher, Date release_date, Clob description) {
         this.id = id;
-        this.book_id = book_id;
+        this.bookId = book_id;
         this.publisher = publisher;
         this.release_date = release_date;
         this.description = description;
@@ -35,7 +33,7 @@ public class Description {
 
     public Description(Description description) {
         this.id = description.id;
-        this.book_id = description.book_id;
+        this.bookId = description.bookId;
         this.publisher = description.publisher;
         this.release_date = description.release_date;
         this.description = description.description;
@@ -45,12 +43,12 @@ public class Description {
         return id;
     }
 
-    public Integer getBook_id() {
-        return book_id;
+    public Integer getBookId() {
+        return bookId;
     }
 
-    public void setBook_id(Integer book_id) {
-        this.book_id = book_id;
+    public void setBookId(Integer book_id) {
+        this.bookId = book_id;
     }
 
     public String getPublisher() {

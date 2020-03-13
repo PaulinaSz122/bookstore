@@ -1,0 +1,1 @@
+insert into users (username, password, email) values ('Paula', 'Stokrotka21', 'paula@gmail.com');
