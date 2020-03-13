@@ -71,9 +71,7 @@ insert into descriptions (book_id, publisher, release_date, description) values 
 <br>
 <br>Tomasz Sekielski
 <br>
-<br>Seweryn Zaorski stara się na nowo ułożyć sobie życie, kiedy do zakładu patomorfologii w Żeromicach zaczynają trafiać ciała małych dzieci z okolicy. Nikt nie potrafi rozwiązać zagadki śmierci młodych ofiar,
-<br>
-<br>nic bowiem nie wskazuje na to, by zostały zamordowane. Seweryn jest jednak przekonany, że może stać się głosem tych, którzy mówią już jedynie z zaświatów.
+<br>Seweryn Zaorski stara się na nowo ułożyć sobie życie, kiedy do zakładu patomorfologii w Żeromicach zaczynają trafiać ciała małych dzieci z okolicy. Nikt nie potrafi rozwiązać zagadki śmierci młodych ofiar, nic bowiem nie wskazuje na to, by zostały zamordowane. Seweryn jest jednak przekonany, że może stać się głosem tych, którzy mówią już jedynie z zaświatów.
 <br>
 <br>Kto i dlaczego zabija niewinne dzieci? I jaki związek ma to z tajemniczymi wiadomościami, które Zaorski zaczyna otrzymywać?
 <br>
