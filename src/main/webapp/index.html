@@ -3,92 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Bookstore</title>
+    <script type="text/javascript" src="webapp.js"></script>
 </head>
 <body>
     <main>
+        <div id="user"></div>
         <div id="books"></div>
     </main>
-
-    <script>
-        (function() {
-            const API_URL = 'http://localhost:8080/api';
-            var id = getQueryVariable("id");
-
-            if (id) {
-                getWholeBook(id);
-            }
-            else {
-                getAllBooks();
-            }
-
-            function getBook(id) {
-                var bookHTML = fetch(`${API_URL}/books/` + id)
-                    .then(processOkResponse)
-                    .then(book => {
-                        var str = `
-                            <img src="/images/${book.id}.jpg">
-                            <h3>Tytuł: ${book.title}</h3>
-                            <h4>Autor: ${book.author}</h4>
-                            <h4>Cena: ${book.price.toFixed(2)} zł</h4>
-                        `; document.getElementById('books').innerHTML += str;
-                });
-            }
-
-            function getDescription(book_id){
-                var bookHTML;
-                fetch(`${API_URL}/description/findOneDescription?book_id=` + book_id)
-                    .then(processOkResponse)
-                    .then(description => {
-                        var str =  `
-                            <h5>Wydawnictwo: ${description.publisher}</h5>
-                            <h5>Data wydania: ${description.release_date}</h5>
-                            <p>${description.description}</p>
-                        `; document.getElementById('books').innerHTML += str;
-                });
-            }
-
-            function getWholeBook(id) {
-                getBook(id);
-                getDescription(id);
-            }
-
-            function getQueryVariable(variable){
-                var query = window.location.search.substring(1);
-                var vars = query.split("&");
-                for (var i = 0; i < vars.length; i++) {
-                        var pair = vars[i].split("=");
-                        if(pair[0] == variable){ return pair[1]; 
-                    }
-                }
-                return(false);
-            }
-
-            function getAllBooks () {
-                var begin = `<table id="books_table">\n`;
-                var end = `<table/>\n`;
-                fetch(`${API_URL}/books/all`)
-                .then(processOkResponse)
-                .then(booksArr => {
-                    document.getElementById('books').innerHTML = begin + booksArr.map(
-                        book => `
-                            <tr>
-                                <td><a href="?id=${book.id}"><img style="width: 60px" src="/images/${book.id}.jpg"></a></td>
-                                <td><a href="?id=${book.id}">${book.title}</a></td>
-                                <td>${book.author}</td>
-                                <td>${book.price.toFixed(2)} zł</td>
-                            </tr>
-                        `
-                    ).join('\n') + end;
-                });
-            }
-
-            function processOkResponse(response = {}) {
-                if (response.ok) {
-                    return response.json();
-                }
-                throw new Error(`Status not 200 (${response.status})`);
-            }
-        }) ();
-    </script>
 </body>
 </html>
