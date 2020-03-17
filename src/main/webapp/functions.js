@@ -3,9 +3,64 @@ function showLoginForm() {
         <form id="loginForm">
             <label for="username">Login:</label><input name="username" type="text">
             <label for="password">Hasło:</label><input name="password" type="password">
+            <div id="error"></div>
             <input type="button" value="Zaloguj" onclick="login()">
         </form>
+        <a href="#" onclick="showRegisterForm()">Nie masz konta? Zarejestruj się!</a>
     `;
+}
+
+function showRegisterForm(){
+    document.getElementById('user').innerHTML = `
+        <form id="registerForm">
+            <div id="correct"></div>
+            <label for="username">Login:</label><input name="username" type="text">
+            <div id="incorrectLogin"></div>
+            <label for="email">E-mail:</label><input name="email" type="text">
+            <div id="incorrectEmail"></div>
+            <label for="password">Hasło:</label><input name="password" type="password">
+            <div id="incorrectPassword"></div>
+            <label for="passwordConfirm">Potwierdź hasło:</label><input name="passwordConfirm" type="password">
+            <div id="incorrectConfirmPassword"></div>
+            <input type="button" value="Zaloguj" onclick="register()">
+        </form>
+        <a href="#" onclick="showLoginForm()">Masz już konto? Zaloguj się!</a>
+    `;
+}
+
+function validateEmail(email) {
+    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+}
+
+function validatePassword(password){
+    if (password.length >= 8 && password.length <= 32) {
+        var re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,32}$/
+        if (password.match(re)) {
+            return true;
+        } else {
+            document.getElementById('incorrectPassword').innerText = 'Hasło powninno zawierać co najmniej jedną dużą i małą literę oraz co najmniej jedną cyfrę!';
+            return false;
+        }
+    } else {
+        document.getElementById('incorrectPassword').innerText = 'Hasło powninno zawierać od 8 do 32 znaków';
+        return false;
+    }
+}
+
+function validateLogin(login) {
+    var re = /^(?=.*[a-zA-z])(?=.*[a-zA-z\d]).{3,32}$/
+    if (login.length >= 3 && login.length <= 32) {
+        if (login.match(re)) {
+            return true;
+        } else {
+            document.getElementById('incorrectLogin').innerText = 'Login powinien składać się z liter i cyfr, z czego pierwszy znak musi być literą!';
+            return false;
+        }
+    } else {
+        document.getElementById('incorrectLogin').innerText = 'Login powinien zawierać od 3 do 32 znaków';
+        return false;
+    }
 }
 
 function login() {
@@ -18,17 +73,77 @@ function login() {
         if (http.readyState == XMLHttpRequest.DONE && this.status == 200) {
             sessionStorage.setItem('user', this.responseText);
             window.location.replace("/");
+        } else {
+            if (JSON.parse(this.responseText).error === "Unauthorized"){
+                document.getElementById('error').innerText = 'Nieprawidłowy login/hasło!';
+            }
         }
     });
     http.send(jsonForm);
 }
 
+function register() {
+    var http = new XMLHttpRequest();
+    var registerForm = document.getElementById('registerForm');
+    var jsonForm = getRegisterFormJSON(registerForm);
+    var msg;
+    if (jsonForm) {
+        http.open('POST', API_URL + '/auth/signup', true);
+        http.setRequestHeader("Content-Type", "application/json");
+        http.onloadend = (function () {
+            console.log(this.responseText);
+            msg = JSON.parse(this.responseText);
+            if (http.readyState == XMLHttpRequest.DONE && this.status == 200) {
+                document.getElementById('correct').innerText = msg.message;
+            } else if (http.readyState == XMLHttpRequest.DONE && this.status == 400) {
+                if (msg.message === "Adres e-mail został już użyty") {
+                    document.getElementById('incorrectEmail').innerText = msg.message;
+                } else if (msg.message === "Nazwa użytkownika jest zajęta") {
+                    document.getElementById('incorrectLogin').innerText = msg.message;
+                }
+            }
+        });
+        console.log(jsonForm);
+        http.send(jsonForm);
+    }
+}
+
 function getLoginFormJSON(formLogin) {
-    console.log(formLogin.method);
-    console.log(formLogin);
     form = new LoginForm();
     form.username = formLogin.elements[0].value;
     form.password = formLogin.elements[1].value;
+    return JSON.stringify(form);
+}
+
+function getRegisterFormJSON(registerForm) {
+    document.getElementById('incorrectLogin').innerText = '';
+    document.getElementById('incorrectEmail').innerText = '';
+    document.getElementById('incorrectPassword').innerText = '';
+    document.getElementById('incorrectConfirmPassword').innerText = '';
+    form = new RegisterForm();
+    if (validateLogin(registerForm.elements[0].value)) {
+        form.username = registerForm.elements[0].value;
+    } else {
+        return null;
+    }
+    if (validateEmail(registerForm.elements[1].value)){
+        form.email = registerForm.elements[1].value;
+    } else {
+        document.getElementById('incorrectEmail').innerText = 'E-email jest nieprawidłowy!';
+        return null;
+    }
+    if (registerForm.elements[2].value === registerForm.elements[3].value) {
+        if (validatePassword(registerForm.elements[2].value)){
+            form.password = registerForm.elements[2].value;
+        } else {
+            return null;
+        }
+    } else {
+        document.getElementById('incorrectConfirmPassword').innerText = 'Hasła nie są identyczne!';
+        return null;
+    }
+    
+    form.role = [ "USER" ];
     return JSON.stringify(form);
 }
 
@@ -36,10 +151,6 @@ function logout() {
     sessionStorage.removeItem('user');
     window.location.reload();
 }
-
-
-
-
 
 function getBook(id) {
     fetch(`${API_URL}/books/` + id)

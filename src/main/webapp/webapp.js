@@ -6,7 +6,10 @@ class LoginForm {
 }
 
 class RegisterForm {
-
+    username;
+    email;
+    role;
+    password;
 }
 
 var session;
