@@ -1,23 +1,17 @@
 package io.github.PaulinaSz122.account.user;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import io.github.PaulinaSz122.account.role.Role;
+import io.github.PaulinaSz122.book.Book;
 import org.hibernate.annotations.NaturalId;
 
 @Entity
@@ -33,10 +27,6 @@ public class User{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-//    @NotBlank
-//    @Size(min=3, max = 50)
-//    private String name;
 
     @NotBlank
     @Size(min=3, max = 100)
@@ -58,13 +48,28 @@ public class User{
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "basket",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "book_id"))
+    private List<Book> basket = new ArrayList<>();
+
     public User() {}
 
-    public User(/*String name,*/ String username, String email, String password) {
-//        this.name = name;
+    public User(@NotBlank @Size(min = 3, max = 100) String username,
+                @NotBlank @Size(max = 100) @Email String email,
+                @NotBlank @Size(min = 6, max = 100) String password) {
         this.username = username;
         this.email = email;
         this.password = password;
+    }
+
+    public List<Book> getBasket() {
+        return basket;
+    }
+
+    public void setBasket(List<Book> basket) {
+        this.basket = basket;
     }
 
     public Integer getId() {
@@ -74,14 +79,6 @@ public class User{
     public void setId(Integer id) {
         this.id = id;
     }
-
-//    public String getName() {
-//        return name;
-//    }
-//
-//    public void setName(String name) {
-//        this.name = name;
-//    }
 
     public String getUsername() {
         return username;

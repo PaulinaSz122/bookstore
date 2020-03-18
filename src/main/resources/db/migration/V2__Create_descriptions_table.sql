@@ -1,3 +1,14 @@
+create table descriptions (
+    id int unsigned primary key auto_increment,
+    book_id int  not null,
+    publisher varchar(100) not null,
+    release_date date not null,
+    description clob not null
+);
+
+alter table descriptions add foreign key (book_id)
+    references books(id);
+
 insert into descriptions (book_id, publisher, release_date, description) values (1, 'Wydawnictwo Albatros', '2019-09-11', 'Mocny jak "To", przerażający jak "Podpalaczka"!
 <br>
 <br>Stephen King powraca do motywów znanych z jego najlepszych książek.

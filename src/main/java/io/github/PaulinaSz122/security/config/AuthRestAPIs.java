@@ -10,6 +10,7 @@ import io.github.PaulinaSz122.account.role.RoleName;
 import io.github.PaulinaSz122.account.role.RoleRepository;
 import io.github.PaulinaSz122.account.user.User;
 import io.github.PaulinaSz122.account.user.UserRepository;
+import io.github.PaulinaSz122.book.Book;
 import io.github.PaulinaSz122.security.jwt.JwtProvider;
 import io.github.PaulinaSz122.security.message.request.LoginForm;
 import io.github.PaulinaSz122.security.message.request.SignUpForm;
